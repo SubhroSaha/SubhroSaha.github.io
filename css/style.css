@@ -15,7 +15,7 @@ body {
 }
 #calculator{
   width:320px;
-  height:520px;
+  height:100%;
   background-color:#e4e5e7;
   margin: auto;
   position: relative;
