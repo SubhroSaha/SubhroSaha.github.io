@@ -100,7 +100,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  jQuery(document).ready(function(){
 
 jQuery('.button_1').click(function(){ alert("test");
-  ga('send', 'event', 'Subscribe', 'Click servey');
+  gtag('event', 'submit', {
+         'event_category' : 'form',
+         'event_label' : 'contact'
+       });
    });
 
 });
