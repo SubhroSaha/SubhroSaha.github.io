@@ -1289,6 +1289,7 @@ table {
   background-color: white;
   width: 100%;
   border-collapse: collapse;
+  margin-top: 80px;
 }
 
 th, td {
