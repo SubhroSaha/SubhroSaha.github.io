@@ -1282,14 +1282,13 @@ footer .credits a {
 }
 
 th, td, tr {
-  border: 1px solid black;
+  border: 1px solid rgb(0, 0, 0);
 }
 
 table {
   background-color: white;
   width: 100%;
   border-collapse: collapse;
-  margin-top: 80px;
 }
 
 th, td {
@@ -1303,4 +1302,12 @@ th.call {
 
 th.put {
   background-color: crimson;
+}
+
+thead{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100000000;
+  background-color: BEIGE;
 }

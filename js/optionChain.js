@@ -16,7 +16,7 @@ const getMax = function (action, color, attribute) {
     sortable.sort(function (a, b) {
         return b[1] - a[1];
     });
-    sortable.splice(7, sortable.length - 1);
+    sortable.splice(5, sortable.length - 1);
     sortable.forEach(x => {
         let classText = "." + attribute + "." + x[0] + "." + action;
         $(classText).css("background-color", color);
@@ -29,13 +29,15 @@ const getMax = function (action, color, attribute) {
     })
 }
 
-const getData = function (index) {
+const getData = function () {
+    var e = document.getElementById("equity_optionchain_select");
+    var value = e.value;
     $.ajax({
-        url: 'https://www.nseindia.com/api/option-chain-indices?symbol=' + index,
+        url: 'https://www.nseindia.com/api/option-chain-indices?symbol=' + value,
         method: 'GET',
         success: function (res) {
             let data = res;
-            console.log(res);
+            // console.log(res);
 
             // Clear table
             document.querySelector("tbody").innerText = "";
@@ -85,34 +87,63 @@ const getData = function (index) {
                     }
                 }
             })
-            console.log('rendered!');
+            // console.log('rendered!');
 
             getMax("call", "crimson", "openInterest");
             getMax("put", "OLIVEDRAB", "openInterest");
             getMax("call", "crimson", "totalTradedVolume")
             getMax("put", "OLIVEDRAB", "totalTradedVolume");
-            // getMax("call", "crimson", "bidQty")
-            // getMax("put", "OLIVEDRAB", "bidQty");
-            // getMax("call", "crimson", "askQty")
-            // getMax("put", "OLIVEDRAB", "askQty");
-        },
 
-        error: function (error) {
-            console.log(error.status);
-        }
+            let underlyingValue = $(".underlyingValue > span");
+            let callTotalOI = $(".callTotalOI > span");
+            let callTotalVol = $(".callTotalVol > span");
+            let putTotalVol = $(".putTotalOI > span");
+            let puyTotalVol = $(".putTotalVol > span");
+            let timeStamp = $(".timeStamp > span");
+            let pcr = $(".pcr > span");
+            let trend = $(".trend > span");
+            
+            underlyingValue.text(data.records.underlyingValue);
+            callTotalOI.text(data.filtered.CE.totOI);
+            callTotalVol.text(data.filtered.CE.totVol);
+            putTotalVol.text(data.filtered.PE.totOI);
+            puyTotalVol.text(data.filtered.PE.totVol);
+            timeStamp.text(data.records.timestamp);
+
+            let pcrOI =  data.filtered.PE.totOI/data.filtered.CE.totOI;
+            let pcrVol =  data.filtered.PE.totVol/data.filtered.CE.totVol;
+            pcr.text(" " + pcrOI.toFixed(2));
+            trend.text(function () {
+                if ( pcrOI > 1) {
+                    document.querySelector("th.trend").style.backgroundColor = "RED";
+                    return "Bearish";
+                } else {
+                    document.querySelector("th.trend").style.backgroundColor = "LAWNGREEN";
+                    return "Bullish";
+                }
+            });
+            // window.addEventListener('scroll', function() {
+            //     document.querySelector('.underlyingValue').classList.add("sticky");
+            // });
+        },
     })
 }
 
-// setInterval(getData, 1000);
 
 
-var e = document.getElementById("equity_optionchain_select");
-function onChange() {
-    var value = e.value;
-    var text = e.options[e.selectedIndex].text;
-    console.log(value, text);
-    getData(value);
-}
-e.onchange = onChange;
+// var e = document.getElementById("equity_optionchain_select");
+// var value = e.value;
+// function onChange() {
+//     var value = e.value;
+//     var text = e.options[e.selectedIndex].text;
+//     console.log(value, text);
+//     getData(value);
+// }
+// e.onchange = onChange;
 
-onChange();
+// var text = e.options[e.selectedIndex].text;
+// console.log(value, text);
+
+setInterval(function() {
+    getData();
+}, 1000);
