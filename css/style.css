@@ -1280,3 +1280,26 @@ footer .credits a {
     bottom: 15px;
   }
 }
+
+th, td, tr {
+  border: 1px solid black;
+}
+
+table {
+  background-color: white;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center;
+  padding: 4px 1px;
+}
+
+th.call {
+  background-color: OLIVEDRAB;
+}
+
+th.put {
+  background-color: crimson;
+}
